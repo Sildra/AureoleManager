@@ -2,28 +2,58 @@
 
 namespace AureoleManager.SkillManager {
     [DataContract]
-    class Skill {
-        [DataMember]
-        string _name;
-        [DataMember]
-        uint _minAccuracy;
-        [DataMember]
-        int _baseDamage;
-        [DataMember]
-        float _majorBonus;
-        [DataMember]
-        float _minorBonus;
+    public class Skill {
+        #region Fields
 
-        SkillCalculator _skillCalculator;
+        private SkillDamage _skillCalculator;
+
+        #endregion
+
+        #region Properties
+
+        [DataMember]
+        public string Name { get; private set; }
+
+        [DataMember]
+        public uint MinAccuracy { get; private set; }
+
+        [DataMember]
+        public int BaseDamage { get; private set; }
+
+        [DataMember]
+        public float MajorBonus { get; private set; }
+
+        [DataMember]
+        public float MinorBonus { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         public Skill(string name, uint minAccuracy, int baseDamage, float majorBonus, float minorBonus) {
-            _name = name;
-            _minAccuracy = minAccuracy;
-            _baseDamage = baseDamage;
-            _majorBonus = majorBonus;
-            _minorBonus = minorBonus;
-            _skillCalculator = new SkillCalculator(_name, _minAccuracy,
-                _baseDamage, _majorBonus, _minorBonus);
+            Name = name;
+            MinAccuracy = minAccuracy;
+            BaseDamage = baseDamage;
+            MajorBonus = majorBonus;
+            MinorBonus = minorBonus;
+            _skillCalculator = new SkillDamage(Name, MinAccuracy,
+                BaseDamage, MajorBonus, MinorBonus);
         }
+
+        #endregion
+
+        #region Public members
+
+        public void Build() {
+            if (_skillCalculator == null)
+                _skillCalculator = new SkillDamage(Name, MinAccuracy,
+                    BaseDamage, MajorBonus, MinorBonus);
+        }
+
+        public void Print(string offset = "") {
+            _skillCalculator.Print(offset);
+        }
+
+        #endregion
     }
 }

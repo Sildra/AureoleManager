@@ -4,20 +4,30 @@ using System.Linq;
 
 namespace AureoleManager.SkillManager {
     /// <summary>
-    /// Base calculator for skills
+    ///     Base calculator for skills
     /// </summary>
-    class ProbabilityCalculator {
-        readonly uint _minAccuracy;
-        readonly float _majorBonus;
-        readonly float _minorBonus;
-        readonly List<Probability> _probabilities = new List<Probability>();
+    internal class ProbabilityCalculator {
+        #region Fields
+
+        private readonly float _majorBonus;
+        private readonly uint _minAccuracy;
+        private readonly float _minorBonus;
+        private readonly List<Probability> _probabilities = new List<Probability>();
+
+        #endregion
+
+        #region Properties
 
         public IEnumerable<Probability> Probabilities {
             get { return _probabilities; }
         }
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Constructor of the Probability Calculator
+        ///     Constructor of the Probability Calculator
         /// </summary>
         /// <param name="minAccuracy"></param>
         /// <param name="majorBonus"></param>
@@ -29,8 +39,26 @@ namespace AureoleManager.SkillManager {
             Create();
         }
 
+        #endregion
+
+        #region Public members
+
         /// <summary>
-        /// Merge 2 probas with same damages
+        ///     Print the probability list
+        /// </summary>
+        public void Print(string offset = "") {
+            Probability.PrintHeader(offset);
+            foreach (var item in _probabilities) {
+                item.Print(offset);
+            }
+        }
+
+        #endregion
+
+        #region Private members
+
+        /// <summary>
+        ///     Merge 2 probas with same damages
         /// </summary>
         /// <param name="proba">Proba to be merged</param>
         /// <param name="bonusDamage">Damage of the proba</param>
@@ -42,7 +70,7 @@ namespace AureoleManager.SkillManager {
         }
 
         /// <summary>
-        /// Create a new probability from a dice roll
+        ///     Create a new probability from a dice roll
         /// </summary>
         /// <param name="a">First dice</param>
         /// <param name="b">Second dice</param>
@@ -67,7 +95,7 @@ namespace AureoleManager.SkillManager {
         }
 
         /// <summary>
-        /// Create the probability list
+        ///     Create the probability list
         /// </summary>
         private void Create() {
             float currentProba = 0;
@@ -84,14 +112,6 @@ namespace AureoleManager.SkillManager {
             }
         }
 
-        /// <summary>
-        /// Print the probability list
-        /// </summary>
-        public void Print() {
-            Probability.PrintHeader();
-            foreach (var item in _probabilities) {
-                item.Print();
-            }
-        }
+        #endregion
     }
 }

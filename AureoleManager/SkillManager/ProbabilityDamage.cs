@@ -1,49 +1,59 @@
 ﻿using System;
 
 namespace AureoleManager.SkillManager {
-    class ProbabilityDamage : IComparable<ProbabilityDamage> {
-        float _proba;
-        float _cumulProba;
-        readonly int _damage;
+    public class ProbabilityDamage : IComparable<ProbabilityDamage> {
+        #region Properties
 
-        public float GetProbability() { return _proba; }
-        public int GetDamage() { return _damage; }
-        public float GetCumulProba() { return _cumulProba; }
-        public void SetCumulProba(float proba) { _cumulProba = proba; }
+        public int Damage { get; private set; }
+        public float CumulProba { get; set; }
+        public float Proba { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         public ProbabilityDamage(float proba, float cumulProbability, int baseDamage, int bonusDamage) {
-            _proba = proba;
-            _cumulProba = cumulProbability;
+            Proba = proba;
+            CumulProba = cumulProbability;
             if (bonusDamage < 0)
-                _damage = 0;
+                Damage = 0;
             else
-                _damage = baseDamage + bonusDamage;
+                Damage = baseDamage + bonusDamage;
         }
 
         public ProbabilityDamage(float proba, int damage) {
-            _proba = proba;
-            _damage = damage;
-            _cumulProba = 0;
+            Proba = proba;
+            Damage = damage;
+            CumulProba = 0;
         }
 
+        #endregion
+
+        #region Interfaces
+
+        public int CompareTo(ProbabilityDamage obj) {
+            return Damage - obj.Damage;
+        }
+
+        #endregion
+
+        #region Public members
+
         public bool Merge(float proba, int damage) {
-            if (_damage == damage) {
-                _proba += proba;
-                return true;
-            }
-            return false;
+            if (Damage != damage)
+                return false;
+            Proba += proba;
+            return true;
         }
 
         public static void PrintHeader() {
             Console.WriteLine("Proba\tCumul\tDamage");
         }
 
-        public void Print() {
-            Console.WriteLine("{0:0.##}%\t{1:0.##}%\t{2}", _proba, _cumulProba, _damage);
+        public void Print(string offset = "") {
+            Console.WriteLine(offset + "{0:0.##}%  \t{1:0.##}%\t{2}", Proba, CumulProba, Damage);
         }
 
-        public int CompareTo(ProbabilityDamage obj) {
-            return _damage - obj._damage;
-        }
+        #endregion
     }
 }
